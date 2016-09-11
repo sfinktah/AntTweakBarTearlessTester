@@ -35,7 +35,21 @@ git submodule update --depth 1
 
 ## Getting Started
 
-### Requirements
+### Requirements (for building Tester only)
+
+ - Visual Studio 2015
+ - Git BASH (comes with Microsoft GIT, etc)
+
+```shell
+cd AntTweakBarTearlessTester
+cd install
+getcef
+```
+
+Then you should be able to build TwSimpleDX11 and run it.
+
+
+### Requirements (for building Tearless)
 
  - Visual Studio 2015
  - CMake

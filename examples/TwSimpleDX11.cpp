@@ -29,6 +29,7 @@
 
 #include "d3d10vs2003.h" // workaround to include D3D10.h and D3D11.h with VS2003
 #include <d3d11.h>
+#include <TearlessLibrary.h>
 
 // Shaders:
 // Vertex and pixel shaders are defined in TwSimpleDX11.hlsl and are compiled 
@@ -327,6 +328,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
         Cleanup();
         return 0;
     }
+
+	TEARLESS_HANDLE pTearless = GetTearless();
+	pTearless->D11Device(g_D3DDev);
+	pTearless->Show();
+
 
     // Create a tweak bar
     TwBar *bar = TwNewBar("TweakBar");
