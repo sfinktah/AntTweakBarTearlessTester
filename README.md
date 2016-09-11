@@ -44,9 +44,11 @@ git submodule update --depth 1
 cd AntTweakBarTearlessTester
 cd install
 getcef
+cd ..
+build
 ```
 
-Then you should be able to build TwSimpleDX11 and run it.
+Then target project is TwSimpleDX11 if you need to know that.
 
 
 ### Requirements (for building Tearless)
@@ -63,3 +65,7 @@ git submodule update --depth 1
 git submodule foreach git checkout master
 build.bat
 ```
+
+### Preparing shit
+
+Yeah, like complex and stuff, ask me sometime

@@ -143,6 +143,7 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E MainPS /Fh $(IntDir)TwSimpleDX11_PS.h TwSimpl
       <PrecompiledHeader />
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;tearless.lib;%(AdditionalDependencies)</AdditionalDependencies>
