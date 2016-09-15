@@ -394,7 +394,7 @@ HRESULT InitDevice(HWND wnd)
     #ifdef _DEBUG
         createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     #endif
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     ZeroMemory(&g_SwapChainDesc, sizeof(g_SwapChainDesc));
     g_SwapChainDesc.BufferCount = 1;
     g_SwapChainDesc.BufferDesc.Width = width;
