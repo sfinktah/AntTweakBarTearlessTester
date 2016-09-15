@@ -432,12 +432,6 @@ HRESULT InitDevice(HWND wnd)
                 return hr;
         }
     }
-#ifdef TEARLESS
-	TEARLESS_HANDLE pTearless = GetTearless();
-	pTearless->D11Device(g_D3DDev);
-	pTearless->D11DeviceContext(g_D3DDevCtx);
-	pTearless->Show();
-#endif
 
     // Create a render target and depth-stencil view
     ID3D11Texture2D *backBuffer = NULL, *dsBuffer = NULL;
