@@ -329,10 +329,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
         return 0;
     }
 
+#define TEARLESS
+#ifdef TEARLESS
 	TEARLESS_HANDLE pTearless = GetTearless();
 	pTearless->D11Device(g_D3DDev);
 	pTearless->D11DeviceContext(g_D3DDevCtx);
 	pTearless->Show();
+#endif
+#undef TEARLESS
 
 
     // Create a tweak bar
@@ -390,6 +394,7 @@ HRESULT InitDevice(HWND wnd)
     #ifdef _DEBUG
         createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     #endif
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     ZeroMemory(&g_SwapChainDesc, sizeof(g_SwapChainDesc));
     g_SwapChainDesc.BufferCount = 1;
     g_SwapChainDesc.BufferDesc.Width = width;
@@ -427,6 +432,12 @@ HRESULT InitDevice(HWND wnd)
                 return hr;
         }
     }
+#ifdef TEARLESS
+	TEARLESS_HANDLE pTearless = GetTearless();
+	pTearless->D11Device(g_D3DDev);
+	pTearless->D11DeviceContext(g_D3DDevCtx);
+	pTearless->Show();
+#endif
 
     // Create a render target and depth-stencil view
     ID3D11Texture2D *backBuffer = NULL, *dsBuffer = NULL;

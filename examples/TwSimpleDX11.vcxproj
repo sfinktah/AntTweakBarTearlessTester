@@ -249,6 +249,9 @@ fxc /T ps_4_0_level_9_1 /E MainPS /Fh $(IntDir)TwSimpleDX11_PS.h TwSimpleDX11.hl
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="DebuggingErrors.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
