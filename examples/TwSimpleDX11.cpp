@@ -22,12 +22,10 @@
 //
 //  ---------------------------------------------------------------------------
 
-#include <AntTweakBar.h>
 #include <cmath>
 #include <vector>
 #include <cassert>
 
-#include "d3d10vs2003.h" // workaround to include D3D10.h and D3D11.h with VS2003
 #include <d3d11.h>
 #include <TearlessLibrary.h>
 
@@ -253,36 +251,6 @@ void Render();
 HRESULT BuildSponge(int levelMax, bool aoEnabled);
 
 
-// Callback function called by AntTweakBar to set the sponge recursion level
-void TW_CALL SetSpongeLevelCB(const void *value, void * /*clientData*/)
-{
-    g_SpongeLevel = *static_cast<const int *>(value);
-    BuildSponge(g_SpongeLevel, g_SpongeAO);
-}
-
-
-// Callback function called by AntTweakBar to get the sponge recursion level
-void TW_CALL GetSpongeLevelCB(void *value, void * /*clientData*/)
-{
-    *static_cast<int *>(value) = g_SpongeLevel;
-}
-
-
-// Callback function called by AntTweakBar to enable/disable ambient occlusion
-void TW_CALL SetSpongeAOCB(const void *value, void * /*clientData*/)
-{
-    g_SpongeAO = *static_cast<const bool *>(value);
-    BuildSponge(g_SpongeLevel, g_SpongeAO);
-}
-
-
-// Callback function called by AntTweakBar to get ambient occlusion state
-void TW_CALL GetSpongeAOCB(void *value, void * /*clientData*/)
-{
-    *static_cast<bool *>(value) = g_SpongeAO;
-}
-
-
 // Main
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
 {
@@ -321,13 +289,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
         return 0;
     }
 
-    // Initialize AntTweakBar
-    if (!TwInit(TW_DIRECT3D11, g_D3DDev))
-    {
-        MessageBoxA(wnd, TwGetLastError(), "AntTweakBar initialization failed", MB_OK|MB_ICONERROR);
-        Cleanup();
-        return 0;
-    }
 
 #define TEARLESS
 #ifdef TEARLESS
@@ -340,21 +301,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
 
 
     // Create a tweak bar
-    TwBar *bar = TwNewBar("TweakBar");
-    TwDefine(" GLOBAL help='This example shows how to integrate AntTweakBar into a DirectX11 application.' "); // Message added to the help bar.
-    int barSize[2] = {224, 320};
-    TwSetParam(bar, NULL, "size", TW_PARAM_INT32, 2, barSize);
-
-    // Add variables to the tweak bar
-    TwAddVarCB(bar, "Level", TW_TYPE_INT32, SetSpongeLevelCB, GetSpongeLevelCB, NULL, "min=0 max=3 group=Sponge keyincr=l keydecr=L");
-    TwAddVarCB(bar, "Ambient Occlusion", TW_TYPE_BOOLCPP, SetSpongeAOCB, GetSpongeAOCB, NULL, "group=Sponge key=o");
-    TwAddVarRW(bar, "Rotation", TW_TYPE_QUAT4F, &g_SpongeRotation, "opened=true axisz=-z group=Sponge");
-    TwAddVarRW(bar, "Animation", TW_TYPE_BOOLCPP, &g_Animate, "group=Sponge key=a");
-    TwAddVarRW(bar, "Animation speed", TW_TYPE_FLOAT, &g_AnimationSpeed, "min=-10 max=10 step=0.1 group=Sponge keyincr=+ keydecr=-");
-    TwAddVarRW(bar, "Light direction", TW_TYPE_DIR3F, &g_LightDir, "opened=true axisz=-z showval=false");
-    TwAddVarRW(bar, "Camera distance", TW_TYPE_FLOAT, &g_CamDistance, "min=0 max=4 step=0.01 keyincr=PGUP keydecr=PGDOWN");
-    TwAddVarRW(bar, "Background", TW_TYPE_COLOR4F, &g_BackgroundColor, "colormode=hls");
-
     // Main message loop
     MSG msg = {0};
     while (WM_QUIT != msg.message)
@@ -371,7 +317,6 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
         }
     }
 
-    TwTerminate();
     Cleanup();
 
     return (int)msg.wParam;
@@ -609,10 +554,6 @@ void Cleanup()
 // Called every time the application receives a message
 LRESULT CALLBACK MessageProc(HWND wnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    // Send event message to AntTweakBar
-    if (TwEventWin(wnd, message, wParam, lParam))
-        return 0; // Event has been handled by AntTweakBar
-
     switch (message) 
     {
         case WM_PAINT:
@@ -671,7 +612,6 @@ LRESULT CALLBACK MessageProc(HWND wnd, UINT message, WPARAM wParam, LPARAM lPara
                     g_D3DDevCtx->RSSetViewports(1, &vp);
                 }
 
-                // TwWindowSize has been called by TwEventWin, so it is not necessary to call it again here.
             }
             return 0;
         case WM_CHAR:
@@ -966,7 +906,6 @@ void Render()
     DrawSponge();
 
 	// Draw tweak bars
-    TwDraw();
 
     // Present the information rendered in the back buffer to the front buffer (the screen)
     g_SwapChain->Present(0, 0);
