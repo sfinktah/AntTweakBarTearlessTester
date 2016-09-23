@@ -1,5 +1,5 @@
 #!/bin/bash
-./wget -nc http://opensource.spotify.com/cefbuilds/cef_binary_3.2785.1477.g58b5209_windows64_client.tar.bz2
+bin/wget -nc http://opensource.spotify.com/cefbuilds/cef_binary_3.2785.1477.g58b5209_windows64_client.tar.bz2
 bin/bzip2 -d cef_binary_3.2785.1477.g58b5209_windows64_client.tar.bz2
 bin/tar xvf cef_binary_3.2785.1477.g58b5209_windows64_client.tar
 mkdir -p ../examples/bin64/
